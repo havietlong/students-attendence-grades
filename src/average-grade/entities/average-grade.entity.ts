@@ -5,6 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
   CreateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { Student } from 'src/students/entities/student.entity';
 
@@ -26,17 +27,17 @@ export class AverageGrade {
   @Column({ name: 'academic_year', type: 'varchar', length: 10 })
   academicYear: string;
 
-  @Column({ name: 'semester_average_october', type: 'float', nullable: true })
-  semesterAverageOctober: number;
+  @Column({ name: 'semester_gpa_scale_10', type: 'float', nullable: true })
+  semesterGpaScale10: number;
 
-  @Column({ name: 'semester_average_april', type: 'float', nullable: true })
-  semesterAverageApril: number;
+  @Column({ name: 'semester_gpa_scale_4', type: 'float', nullable: true })
+  semesterGpaScale4: number;
 
-  @Column({ name: 'cumulative_gpa_october', type: 'float', nullable: true })
-  cumulativeGpaOctober: number;
+  @Column({ name: 'cumulative_gpa_scale_10', type: 'float', nullable: true })
+  cumulativeGpaScale10: number;
 
-  @Column({ name: 'cumulative_gpa_april', type: 'float', nullable: true })
-  cumulativeGpaApril: number;
+  @Column({ name: 'cumulative_gpa_scale_4', type: 'float', nullable: true })
+  cumulativeGpaScale4: number;
 
   @Column({ name: 'academic_classification', type: 'varchar', length: 20, nullable: true })
   academicClassification: string;
@@ -47,6 +48,11 @@ export class AverageGrade {
   @Column({ name: 'credits_accumulated', type: 'int', nullable: true })
   creditsAccumulated: number;
 
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt?: Date;
+
   @CreateDateColumn({ name: 'calculated_at' })
   calculatedAt: Date;
+
+  
 }

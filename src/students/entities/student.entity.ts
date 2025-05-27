@@ -1,6 +1,7 @@
 import { AverageGrade } from 'src/average-grade/entities/average-grade.entity';
+import { Class } from 'src/class/entities/class.entity';
 import { FinalGrade } from 'src/final-grade/entities/final-grade.entity';
-import { Entity, Column, PrimaryColumn, BeforeInsert, DeleteDateColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryColumn, BeforeInsert, DeleteDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity('students')
 export class Student {
@@ -25,7 +26,7 @@ export class Student {
     @Column({ name: 'phone_number', length: 20, nullable: true })
     phoneNumber?: string;
 
-    @Column({ name: 'class_id', length: 20 })
+    @Column({ name: 'class_id', length: 20, })
     classId: string;
 
     @Column({ name: 'study_status', length: 20 })
@@ -40,6 +41,10 @@ export class Student {
     @OneToMany(() => AverageGrade, avg => avg.student)
     averageGrades: AverageGrade[];
 
+    @ManyToOne(() => Class, (cls) => cls.students, { eager: true })
+    @JoinColumn({ name: 'class_id' })
+    class: Class;
+  
 
     @BeforeInsert()
     generateStudentId() {

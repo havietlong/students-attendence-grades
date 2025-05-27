@@ -4,6 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudentsModule } from './students/students.module';
 import { FinalGradeModule } from './final-grade/final-grade.module';
 import { AverageGradeModule } from './average-grade/average-grade.module';
+import { ClassModule } from './class/class.module';
+import { MajorsModule } from './majors/majors.module';
+import { DepartmentModule } from './department/department.module';
+import { LecturerModule } from './lecturer/lecturer.module';
 
 @Module({
   imports: [
@@ -25,6 +29,10 @@ import { AverageGradeModule } from './average-grade/average-grade.module';
     StudentsModule,
     FinalGradeModule,
     AverageGradeModule,
+    ClassModule,
+    MajorsModule,
+    DepartmentModule,
+    LecturerModule,
   ],
 })
 export class AppModule {}

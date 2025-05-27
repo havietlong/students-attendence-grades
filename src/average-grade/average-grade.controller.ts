@@ -1,34 +1,46 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { AverageGradeService } from './average-grade.service';
 import { CreateAverageGradeDto } from './dto/create-average-grade.dto';
 import { UpdateAverageGradeDto } from './dto/update-average-grade.dto';
 
-@Controller('average-grade')
+@Controller('average-grades')
 export class AverageGradeController {
-  constructor(private readonly averageGradeService: AverageGradeService) {}
+  constructor(private readonly service: AverageGradeService) {}
 
   @Post()
-  create(@Body() createAverageGradeDto: CreateAverageGradeDto) {
-    return this.averageGradeService.create(createAverageGradeDto);
+  create(@Body() createDto: CreateAverageGradeDto) {
+    return this.service.create(createDto);
   }
 
   @Get()
   findAll() {
-    return this.averageGradeService.findAll();
+    return this.service.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.averageGradeService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.service.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAverageGradeDto: UpdateAverageGradeDto) {
-    return this.averageGradeService.update(+id, updateAverageGradeDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateDto: UpdateAverageGradeDto,
+  ) {
+    return this.service.update(id, updateDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.averageGradeService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.service.remove(id);
   }
 }

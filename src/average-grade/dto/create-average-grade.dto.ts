@@ -23,43 +23,67 @@ export class CreateAverageGradeDto {
   @Length(1, 10)
   academicYear: string;
 
-  @ApiPropertyOptional({ example: 7.5, description: 'Semester GPA in October (10-point scale)' })
+  @ApiPropertyOptional({
+    example: 7.5,
+    description: 'Semester GPA on 10-point scale',
+  })
   @IsOptional()
   @IsNumber()
-  semesterAverageOctober?: number;
+  semesterGpaScale10?: number;
 
-  @ApiPropertyOptional({ example: 8.0, description: 'Semester GPA in April (10-point scale)' })
+  @ApiPropertyOptional({
+    example: 3.2,
+    description: 'Semester GPA on 4-point scale',
+  })
   @IsOptional()
   @IsNumber()
-  semesterAverageApril?: number;
+  semesterGpaScale4?: number;
 
-  @ApiPropertyOptional({ example: 3.0, description: 'Cumulative GPA in October (4-point scale)' })
+  @ApiPropertyOptional({
+    example: 8.1,
+    description: 'Cumulative GPA on 10-point scale',
+  })
   @IsOptional()
   @IsNumber()
-  cumulativeGpaOctober?: number;
+  cumulativeGpaScale10?: number;
 
-  @ApiPropertyOptional({ example: 3.5, description: 'Cumulative GPA in April (4-point scale)' })
+  @ApiPropertyOptional({
+    example: 3.4,
+    description: 'Cumulative GPA on 4-point scale',
+  })
   @IsOptional()
   @IsNumber()
-  cumulativeGpaApril?: number;
+  cumulativeGpaScale4?: number;
 
-  @ApiPropertyOptional({ example: 'Good', description: 'Academic classification' })
+  @ApiPropertyOptional({
+    example: 'Excellent',
+    description: 'Academic classification based on GPA',
+  })
   @IsOptional()
   @IsString()
   @Length(0, 20)
   academicClassification?: string;
 
-  @ApiPropertyOptional({ example: 20, description: 'Number of credits earned this semester' })
+  @ApiPropertyOptional({
+    example: 20,
+    description: 'Number of credits earned this semester',
+  })
   @IsOptional()
   @IsInt()
   creditsEarned?: number;
 
-  @ApiPropertyOptional({ example: 120, description: 'Total number of accumulated credits' })
+  @ApiPropertyOptional({
+    example: 120,
+    description: 'Total accumulated credits',
+  })
   @IsOptional()
   @IsInt()
   creditsAccumulated?: number;
 
-  @ApiPropertyOptional({ example: '2025-05-25T00:00:00.000Z', description: 'Date of GPA calculation' })
+  @ApiPropertyOptional({
+    example: '2025-05-25T00:00:00.000Z',
+    description: 'Date when GPA was calculated',
+  })
   @IsOptional()
   @IsDateString()
   calculatedAt?: string;
