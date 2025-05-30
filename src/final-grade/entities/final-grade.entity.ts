@@ -9,6 +9,7 @@ import {
     DeleteDateColumn,
 } from 'typeorm';
 import { Student } from 'src/students/entities/student.entity';
+import { CourseClass } from 'src/course-class/entities/course-class.entity';
 
 @Entity('final_grades')
 export class FinalGrade {
@@ -45,4 +46,8 @@ export class FinalGrade {
     @ManyToOne(() => Student, (student) => student.finalGrades)
     @JoinColumn({ name: 'studentId' })
     student: Student;
+
+    @ManyToOne(() => CourseClass, (courseClass) => courseClass.finalGrades)
+    @JoinColumn({ name: 'class_id' })
+    courseClass: CourseClass;
 }

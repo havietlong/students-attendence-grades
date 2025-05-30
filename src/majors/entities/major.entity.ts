@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Department } from 'src/department/entities/department.entity';
 import { Class } from 'src/class/entities/class.entity';
+import { Subject } from 'src/subject/entities/subject.entity';
 
 @Entity('majors')
 export class Major {
@@ -30,4 +31,7 @@ export class Major {
 
     @OneToMany(() => Class, (cls) => cls.major)
     classes: Class[];
+
+    @OneToMany(() => Subject, (subject) => subject.major)
+    subjects: Subject[];
 }

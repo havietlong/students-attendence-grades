@@ -8,6 +8,16 @@ import { ClassModule } from './class/class.module';
 import { MajorsModule } from './majors/majors.module';
 import { DepartmentModule } from './department/department.module';
 import { LecturerModule } from './lecturer/lecturer.module';
+import { ScoreDetailModule } from './score-detail/score-detail.module';
+import { ScoreTypeModule } from './score-type/score-type.module';
+import { SubjectScoreConfigModule } from './subject-score-config/subject-score-config.module';
+import { SubjectModule } from './subject/subject.module';
+import { CourseClassModule } from './course-class/course-class.module';
+import { AttendanceModule } from './attendance/attendance.module';
+import { CourseRegistrationModule } from './course-registration/course-registration.module';
+import { UserModule } from './user/user.module';
+import { PermissionModule } from './permission/permission.module';
+import { UserPermissionModule } from './user-permission/user-permission.module';
 
 @Module({
   imports: [
@@ -33,6 +43,16 @@ import { LecturerModule } from './lecturer/lecturer.module';
     MajorsModule,
     DepartmentModule,
     LecturerModule,
+    ScoreDetailModule,
+    ScoreTypeModule,
+    SubjectScoreConfigModule,
+    SubjectModule,
+    CourseClassModule,
+    AttendanceModule,
+    CourseRegistrationModule,
+    UserModule,
+    PermissionModule,
+    UserPermissionModule,
   ],
 })
 export class AppModule {}

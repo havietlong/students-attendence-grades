@@ -1,6 +1,9 @@
+import { Attendance } from 'src/attendance/entities/attendance.entity';
 import { AverageGrade } from 'src/average-grade/entities/average-grade.entity';
 import { Class } from 'src/class/entities/class.entity';
+import { CourseRegistration } from 'src/course-registration/entities/course-registration.entity';
 import { FinalGrade } from 'src/final-grade/entities/final-grade.entity';
+import { ScoreDetail } from 'src/score-detail/entities/score-detail.entity';
 import { Entity, Column, PrimaryColumn, BeforeInsert, DeleteDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity('students')
@@ -44,7 +47,9 @@ export class Student {
     @ManyToOne(() => Class, (cls) => cls.students, { eager: true })
     @JoinColumn({ name: 'class_id' })
     class: Class;
-  
+
+    @OneToMany(() => Attendance, (attendance) => attendance.student)
+    attendances: Attendance[];
 
     @BeforeInsert()
     generateStudentId() {
@@ -52,5 +57,11 @@ export class Student {
         const suffix = randomNumber.toString().padStart(5, '0');
         this.studentId = 'BKC' + suffix;
     }
+
+    @OneToMany(() => CourseRegistration, (registration) => registration.student)
+    courseRegistrations: CourseRegistration[];
+
+    @OneToMany(() => ScoreDetail, (scoreDetail) => scoreDetail.student)
+    scoreDetails: ScoreDetail[];
 
 }
