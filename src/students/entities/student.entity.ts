@@ -4,6 +4,7 @@ import { Class } from 'src/class/entities/class.entity';
 import { CourseRegistration } from 'src/course-registration/entities/course-registration.entity';
 import { FinalGrade } from 'src/final-grade/entities/final-grade.entity';
 import { ScoreDetail } from 'src/score-detail/entities/score-detail.entity';
+import { User } from 'src/user/entities/user.entity';
 import { Entity, Column, PrimaryColumn, BeforeInsert, DeleteDateColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity('students')
@@ -11,13 +12,13 @@ export class Student {
     @PrimaryColumn({ name: 'student_id' })
     studentId: string;
 
-    @Column({ name: 'full_name', length: 100 })
+    @Column({ name: 'full_name', length: 100, nullable: true })
     fullName: string;
 
-    @Column({ name: 'date_of_birth', type: 'date' })
+    @Column({ name: 'date_of_birth', type: 'date', nullable: true })
     dateOfBirth: Date;
 
-    @Column({ name: 'gender', length: 10 })
+     @Column({ name: 'gender', type: 'char', length: 1, nullable: true })
     gender: string;
 
     @Column({ name: 'address', length: 200, nullable: true })
@@ -29,10 +30,10 @@ export class Student {
     @Column({ name: 'phone_number', length: 20, nullable: true })
     phoneNumber?: string;
 
-    @Column({ name: 'class_id', length: 20, })
+    @Column({ name: 'class_id', length: 20, nullable: true })
     classId: string;
 
-    @Column({ name: 'study_status', length: 20 })
+    @Column({ name: 'study_status', length: 20, nullable: true })
     studyStatus: string;
 
     @DeleteDateColumn({ type: 'timestamp', nullable: true })
@@ -63,5 +64,12 @@ export class Student {
 
     @OneToMany(() => ScoreDetail, (scoreDetail) => scoreDetail.student)
     scoreDetails: ScoreDetail[];
+
+    @Column({ nullable:true })
+    userId: string;
+
+    @ManyToOne(() => User, { eager: false })
+    @JoinColumn({ name: 'userId' })
+    user: User;
 
 }

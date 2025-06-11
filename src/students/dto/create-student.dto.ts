@@ -2,25 +2,25 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString, IsDateString, IsEmail, IsOptional, IsEnum, IsNotEmpty } from 'class-validator';
 
 export class CreateStudentDto {
-//   @ApiPropertyOptional({ description: 'Student ID (auto-generated)' })
-//   @IsOptional()
-//   @IsString()
-//   studentId?: string;
+  //   @ApiPropertyOptional({ description: 'Student ID (auto-generated)' })
+  //   @IsOptional()
+  //   @IsString()
+  //   studentId?: string;
 
   @ApiProperty({ description: 'Full name of the student' })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   fullName: string;
 
   @ApiProperty({ description: 'Date of birth (YYYY-MM-DD)' })
-  @IsNotEmpty()
+  @IsOptional()
   @IsDateString()
   dateOfBirth: string;
 
-  @ApiProperty({ enum: ['Male', 'Female', 'Other'] })
-  @IsNotEmpty()
-  @IsEnum(['Male', 'Female', 'Other'])
-  gender: 'Male' | 'Female' | 'Other';
+  @ApiProperty({ enum: ['M','F'] })
+  @IsOptional()
+  @IsEnum(['M', 'F'])
+  gender: 'M' | 'F' ;
 
   @ApiPropertyOptional({ description: 'Home address' })
   @IsOptional()
@@ -38,7 +38,7 @@ export class CreateStudentDto {
   phoneNumber?: string;
 
   @ApiProperty({ description: 'Class ID the student belongs to' })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   classId: string;
 
@@ -46,4 +46,7 @@ export class CreateStudentDto {
   @IsOptional()
   @IsEnum(['enrolled', 'graduated', 'dropped', 'suspended'])
   studyStatus?: 'enrolled' | 'graduated' | 'dropped' | 'suspended';
+
+  @ApiProperty()
+  userId: string;
 }

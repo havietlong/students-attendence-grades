@@ -25,7 +25,7 @@ export class StudentsService {
     });
   }
 
-  async findOne(id: string): Promise<Student|null> {
+  async findOne(id: string): Promise<Student | null> {
     return this.studentsRepository.findOne({
       where: {
         studentId: id,
@@ -40,8 +40,15 @@ export class StudentsService {
     await this.studentsRepository.softRemove(student);
   }
 
-  update(id: number, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
+  async update(id: string, updateStudentDto: UpdateStudentDto): Promise<Student> {
+    const student = await this.studentsRepository.findOne({ where: { userId: id } });
+
+    if (!student) {
+      throw new NotFoundException(`Student with ID ${id} not found`);
+    }
+
+    const updatedStudent = Object.assign(student, updateStudentDto);
+    return await this.studentsRepository.save(updatedStudent);
   }
 
   async generateUniqueStudentId(): Promise<string> {
@@ -60,5 +67,11 @@ export class StudentsService {
     }
 
     return studentId;
+  }
+
+   async findByEmail(email: string): Promise<Student | null> {
+    return this.studentsRepository.findOne({
+      where: { email },
+    });
   }
 }

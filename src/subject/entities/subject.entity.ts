@@ -14,7 +14,7 @@ import { CourseClass } from 'src/course-class/entities/course-class.entity';
 
 @Entity('subject')
 export class Subject {
-    @ApiProperty({ example: 'MH001' })
+    @ApiProperty({ example: 'MH001',nullable:true })
     @PrimaryColumn({ type: 'varchar', length: 10 })
     subjectCode: string;
 

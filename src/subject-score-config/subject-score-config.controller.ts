@@ -7,6 +7,7 @@ import {
   Put,
   Delete,
   ParseIntPipe,
+  Patch,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { SubjectScoreConfigService } from './subject-score-config.service';
@@ -40,7 +41,7 @@ export class SubjectScoreConfigController {
     return this.service.findOne(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   @ApiOperation({ summary: 'Update a subject score configuration' })
   @ApiResponse({ status: 200, description: 'Updated successfully', type: SubjectScoreConfig })
   update(@Param('id', ParseIntPipe) id: number, @Body() updateDto: UpdateSubjectScoreConfigDto) {

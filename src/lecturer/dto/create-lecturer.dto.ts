@@ -30,4 +30,7 @@ export class CreateLecturerDto {
 
   @ApiProperty({ example: 'CNTT' })
   departmentCode: string;
+
+  @ApiProperty()
+  userId: string;
 }

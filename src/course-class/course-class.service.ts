@@ -10,12 +10,38 @@ export class CourseClassService {
   constructor(
     @InjectRepository(CourseClass)
     private readonly courseClassRepository: Repository<CourseClass>,
-  ) {}
+  ) { }
 
-  async create(createDto: CreateCourseClassDto): Promise<CourseClass> {
+  async create(createDto: CreateCourseClassDto): Promise<any> {
     const courseClass = this.courseClassRepository.create(createDto);
-    return this.courseClassRepository.save(courseClass);
+    const savedClass = await this.courseClassRepository.save(courseClass);
+
+    const sessionDates = this.generateSessionDates(
+      savedClass.dayOfWeek,
+      savedClass.startDate,
+      savedClass.endDate
+    );
+
+    return {
+      ...savedClass,
+      sessionDates
+    };
   }
+
+  private generateSessionDates(daysOfWeek: number[], startDate: Date, endDate: Date): string[] {
+    const dates: string[] = [];
+    const current = new Date(startDate);
+
+    while (current <= new Date(endDate)) {
+      if (daysOfWeek.includes(current.getDay())) {
+        dates.push(current.toISOString().split('T')[0]); // format: YYYY-MM-DD
+      }
+      current.setDate(current.getDate() + 1);
+    }
+
+    return dates;
+  }
+
 
   async findAll(): Promise<CourseClass[]> {
     return this.courseClassRepository.find({ relations: ['subject', 'lecturer'] });

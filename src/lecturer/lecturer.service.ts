@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Lecturer } from './entities/lecturer.entity';
@@ -27,8 +27,15 @@ export class LecturersService {
     });
   }
 
-  update(id: string, updateDto: UpdateLecturerDto) {
-    return this.lecturerRepo.update(id, updateDto);
+  async update(id: string, updateDto: UpdateLecturerDto) {
+    const student = await this.lecturerRepo.findOne({ where: { userId: id } });
+    
+        if (!student) {
+          throw new NotFoundException(`Lecturer with ID ${id} not found`);
+        }
+    
+        const updatedStudent = Object.assign(student, updateDto);
+        return await this.lecturerRepo.save(updatedStudent);
   }
 
   remove(id: string) {

@@ -12,7 +12,7 @@ import { Permission } from 'src/permission/entities/permission.entity';
 @Entity('user_permissions')
 export class UserPermission {
   @ApiProperty({ example: 'USER001' })
-  @PrimaryColumn({ type: 'varchar', length: 10 })
+  @PrimaryColumn({ type: 'varchar'})
   userId: string;
 
   @ApiProperty({ example: 'PERM001' })

@@ -30,7 +30,7 @@ export class ScoreDetail {
   student: Student;
 
   @ApiProperty({ example: 'LHP001' })
-  @Column({ type: 'varchar', length: 10 })
+  @Column({ type: 'varchar'})
   classCode: string;
 
   @ManyToOne(() => ScoreType, { nullable: false })

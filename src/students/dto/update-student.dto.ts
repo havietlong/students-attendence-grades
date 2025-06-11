@@ -14,10 +14,10 @@ export class UpdateStudentDto extends PartialType(CreateStudentDto) {
   @IsDateString()
   dateOfBirth: string;
 
-  @ApiProperty({ enum: ['Male', 'Female', 'Other'] })
+  @ApiProperty({ enum: ['M','F'] })
   @IsNotEmpty()
-  @IsEnum(['Male', 'Female', 'Other'])
-  gender: 'Male' | 'Female' | 'Other';
+@IsEnum(['M', 'F'])
+  gender: 'M' | 'F' ;
 
   @ApiPropertyOptional({ description: 'Home address' })
   @IsOptional()

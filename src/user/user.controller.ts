@@ -8,17 +8,41 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { extname } from 'path';
+import { diskStorage } from 'multer';  // <----- Import diskStorage here
+import { File as MulterFile } from 'multer';
 
 @ApiTags('Users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+    @Post('upload-avatar')
+  @UseInterceptors(FileInterceptor('avatar', {
+    storage: diskStorage({
+      destination: './pictures',
+      filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        cb(null, `${uniqueSuffix}${extname(file.originalname)}`);
+      },
+    }),
+  }))
+  async uploadAvatar(
+  @UploadedFile() file: MulterFile,
+  @Body('userId') userId: string
+) {
+  const imagePath = `/pictures/${file.filename}`;
+  return this.userService.updateUserAvatar(userId, imagePath);
+}
 
   @Post()
   @ApiOperation({ summary: 'Create a new user' })
@@ -56,3 +80,4 @@ export class UserController {
     return this.userService.remove(id);
   }
 }
+

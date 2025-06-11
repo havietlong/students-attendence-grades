@@ -18,6 +18,9 @@ import { CourseRegistrationModule } from './course-registration/course-registrat
 import { UserModule } from './user/user.module';
 import { PermissionModule } from './permission/permission.module';
 import { UserPermissionModule } from './user-permission/user-permission.module';
+import { AuthModule } from './auth/auth.module';
+import { ClassSessionModule } from './class-session/class-session.module';
+
 
 @Module({
   imports: [
@@ -36,6 +39,7 @@ import { UserPermissionModule } from './user-permission/user-permission.module';
       }),
       inject: [ConfigService],
     }),
+    ClassSessionModule,
     StudentsModule,
     FinalGradeModule,
     AverageGradeModule,
@@ -53,6 +57,8 @@ import { UserPermissionModule } from './user-permission/user-permission.module';
     UserModule,
     PermissionModule,
     UserPermissionModule,
+    AuthModule,
+    ClassSessionModule,
   ],
 })
 export class AppModule {}

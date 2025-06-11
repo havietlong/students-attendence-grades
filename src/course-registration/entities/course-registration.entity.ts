@@ -10,7 +10,7 @@ export class CourseRegistration {
   @Column({ name: 'student_id', type: 'varchar', length: 10 })
   studentId: string;
 
-  @Column({ name: 'class_id', type: 'varchar', length: 10 })
+  @Column({ name: 'class_id', type: 'varchar' })
   classId: string;
 
   @Column({ name: 'registration_date', type: 'timestamp' })

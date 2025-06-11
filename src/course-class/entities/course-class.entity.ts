@@ -5,6 +5,7 @@ import {
     ManyToOne,
     JoinColumn,
     OneToMany,
+    PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Subject } from 'src/subject/entities/subject.entity';
 import { Lecturer } from 'src/lecturer/entities/lecturer.entity';
@@ -12,10 +13,11 @@ import { Attendance } from 'src/attendance/entities/attendance.entity';
 import { CourseRegistration } from 'src/course-registration/entities/course-registration.entity';
 import { FinalGrade } from 'src/final-grade/entities/final-grade.entity';
 import { ScoreDetail } from 'src/score-detail/entities/score-detail.entity';
+import { ClassSession } from 'src/class-session/entities/class-session.entity';
 
 @Entity('course_class')
 export class CourseClass {
-    @PrimaryColumn({ name: 'course_class_id', type: 'varchar', length: 10 })
+    @PrimaryGeneratedColumn("uuid")
     courseClassId: string;
 
     @Column({ name: 'subject_code', type: 'varchar', length: 10 })
@@ -33,14 +35,8 @@ export class CourseClass {
     @Column({ name: 'classroom', type: 'varchar', length: 20 })
     classroom: string;
 
-    @Column({ name: 'day_of_week', type: 'int' })
-    dayOfWeek: number;
-
-    @Column({ name: 'start_period', type: 'int' })
-    startPeriod: number;
-
-    @Column({ name: 'period_count', type: 'int' })
-    periodCount: number;
+    @Column({ name: 'day_of_week', type: 'simple-array' })
+    dayOfWeek: number[];
 
     @Column({ name: 'start_date', type: 'date' })
     startDate: Date;
@@ -50,9 +46,6 @@ export class CourseClass {
 
     @Column({ name: 'max_capacity', type: 'int' })
     maxCapacity: number;
-
-    @OneToMany(() => Attendance, (attendance) => attendance.courseClass)
-    attendances: Attendance[];
 
     @ManyToOne(() => Subject, (subject) => subject.courseClasses, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'subject_code' })
@@ -71,5 +64,7 @@ export class CourseClass {
     @OneToMany(() => ScoreDetail, scoreDetail => scoreDetail.classCode)
     scoreDetails: ScoreDetail[];
 
+    @OneToMany(() => ClassSession, (session) => session.courseClass)
+    sessions: ClassSession[];
 
 }

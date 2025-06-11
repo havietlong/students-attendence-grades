@@ -1,11 +1,8 @@
 // create-course-class.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsInt, IsDateString, IsOptional } from 'class-validator';
+import { IsString, IsInt, IsDateString, IsOptional, IsArray } from 'class-validator';
 
 export class CreateCourseClassDto {
-  @ApiProperty({ example: 'CC101' })
-  @IsString()
-  courseClassId: string;
 
   @ApiProperty({ example: 'SUBJ01' })
   @IsString()
@@ -28,17 +25,9 @@ export class CreateCourseClassDto {
   @IsString()
   classroom: string;
 
-  @ApiProperty({ example: 2, description: 'Day of week as integer, 1=Monday' })
-  @IsInt()
-  dayOfWeek: number;
-
-  @ApiProperty({ example: 3, description: 'Start period of the day' })
-  @IsInt()
-  startPeriod: number;
-
-  @ApiProperty({ example: 4, description: 'Number of periods for this class' })
-  @IsInt()
-  periodCount: number;
+  @ApiProperty({ example: '[1,3]', description: 'Day of week as integer, 1=Monday' })
+  @IsArray()
+  dayOfWeek: number[];
 
   @ApiProperty({ example: '2024-09-01' })
   @IsDateString()
