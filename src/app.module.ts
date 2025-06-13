@@ -20,6 +20,7 @@ import { PermissionModule } from './permission/permission.module';
 import { UserPermissionModule } from './user-permission/user-permission.module';
 import { AuthModule } from './auth/auth.module';
 import { ClassSessionModule } from './class-session/class-session.module';
+import { MailModule } from './mail/mail.module';
 
 
 @Module({
@@ -59,6 +60,7 @@ import { ClassSessionModule } from './class-session/class-session.module';
     UserPermissionModule,
     AuthModule,
     ClassSessionModule,
+    MailModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }

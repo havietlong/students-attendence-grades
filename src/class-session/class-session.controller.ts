@@ -15,10 +15,11 @@ import { UpdateClassSessionDto } from './dto/update-class-session.dto';
 import { ClassSession } from './entities/class-session.entity';
 import { SwapClassSessionDto } from './dto/swapp-class-session.dto';
 
+
 @ApiTags('Class Sessions')
 @Controller('class-session')
 export class ClassSessionController {
-  constructor(private readonly classSessionService: ClassSessionService) {}
+  constructor(private readonly classSessionService: ClassSessionService) { }
 
   @Post()
   @ApiOperation({ summary: 'Create a new class session' })
@@ -26,6 +27,12 @@ export class ClassSessionController {
   create(@Body() createDto: CreateClassSessionDto): Promise<ClassSession> {
     return this.classSessionService.create(createDto);
   }
+
+  @Post('many')
+  async createSessions(@Body() sessions: CreateClassSessionDto[]) {
+    return await this.classSessionService.createMany(sessions);
+  }
+
 
   @Get()
   @ApiOperation({ summary: 'Get all class sessions' })
