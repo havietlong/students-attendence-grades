@@ -18,8 +18,13 @@ export class StudentsController {
     return this.studentsService.findAll(); // Calls the service method
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Student|null> {
+  @Get(':studentId')
+  async findOne(@Param('studentId') id: string): Promise<Student|null> {
+    return this.studentsService.findOne(id); // Don't cast to number
+  }
+
+  @Get(':userId')
+  async findByUserId(@Param('userId') id: string): Promise<Student|null> {
     return this.studentsService.findOne(id); // Don't cast to number
   }
 

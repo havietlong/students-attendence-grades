@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsDateString, IsInt, IsOptional, Length, Min } from 'class-validator';
+import { IsString, IsDateString, IsInt, IsOptional, Length, Min, IsBoolean } from 'class-validator';
 
 export class CreateClassSessionDto {
   @ApiProperty({ example: 'CS101-001' })
@@ -26,4 +26,20 @@ export class CreateClassSessionDto {
   @IsInt()
   @Min(1)
   periodCount: number;
+
+  @ApiProperty({ example: true })
+  @IsBoolean()
+  isTaught: boolean;
+
+  @ApiProperty({ example: true })
+  @IsBoolean()
+  sentAttendance: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isExamDay?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isGraded?: boolean;
 }

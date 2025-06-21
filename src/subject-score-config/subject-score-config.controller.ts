@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
   Patch,
+  ParseArrayPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { SubjectScoreConfigService } from './subject-score-config.service';
@@ -18,7 +19,7 @@ import { SubjectScoreConfig } from './entities/subject-score-config.entity';
 @ApiTags('SubjectScoreConfig')
 @Controller('subject-score-config')
 export class SubjectScoreConfigController {
-  constructor(private readonly service: SubjectScoreConfigService) {}
+  constructor(private readonly service: SubjectScoreConfigService) { }
 
   @Post()
   @ApiOperation({ summary: 'Create a new subject score configuration' })
@@ -26,6 +27,22 @@ export class SubjectScoreConfigController {
   create(@Body() createDto: CreateSubjectScoreConfigDto) {
     return this.service.create(createDto);
   }
+
+  @Post('many')
+  @ApiOperation({ summary: 'Create many rows of subject score configuration' })
+  createMany(
+    @Body(new ParseArrayPipe({ items: CreateSubjectScoreConfigDto }))
+    body: CreateSubjectScoreConfigDto[]
+  ) {
+    return this.service.createMany(body);
+  }
+
+  @Get(':courseClassId')
+   @ApiOperation({ summary: 'Get subject score configurations based on courseClassId' })
+  getByCourseClass(@Param('courseClassId') courseClassId: string) {
+    return this.service.findByCourseClass(courseClassId);
+  }
+
 
   @Get()
   @ApiOperation({ summary: 'Get all subject score configurations' })

@@ -10,6 +10,8 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,13 +22,15 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
 import { diskStorage } from 'multer';  // <----- Import diskStorage here
 import { File as MulterFile } from 'multer';
+import * as bcrypt from 'bcrypt';
+
 
 @ApiTags('Users')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
-    @Post('upload-avatar')
+  @Post('upload-avatar')
   @UseInterceptors(FileInterceptor('avatar', {
     storage: diskStorage({
       destination: './pictures',
@@ -37,12 +41,12 @@ export class UserController {
     }),
   }))
   async uploadAvatar(
-  @UploadedFile() file: MulterFile,
-  @Body('userId') userId: string
-) {
-  const imagePath = `/pictures/${file.filename}`;
-  return this.userService.updateUserAvatar(userId, imagePath);
-}
+    @UploadedFile() file: MulterFile,
+    @Body('userId') userId: string
+  ) {
+    const imagePath = `/pictures/${file.filename}`;
+    return this.userService.updateUserAvatar(userId, imagePath);
+  }
 
   @Post()
   @ApiOperation({ summary: 'Create a new user' })
@@ -72,6 +76,29 @@ export class UserController {
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
+
+  @Patch(':id/change-password')
+  @ApiOperation({ summary: 'Change users password' })
+  async changePassword(
+    @Param('id') userId: string,
+    @Body() body: { currentPassword: string; newPassword: string }
+  ) {
+    const user = await this.userService.findOne(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const isMatch = await bcrypt.compare(body.currentPassword, user.password);
+    if (!isMatch) {
+      throw new BadRequestException('Current password is incorrect');
+    }
+
+    const hashed = await bcrypt.hash(body.newPassword, 10);
+    console.log(body.newPassword);
+    
+    return this.userService.update(userId, { password: hashed });
+  }
+
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a user' })

@@ -13,9 +13,9 @@ export class ScoreType {
     @Column({ type: 'varchar', length: 50 })
     scoreTypeName: string; // renamed from ten_loai_diem
 
-    @ApiProperty({ example: 20.0 })
-    @Column({ type: 'float' })
-    percentage: number; // renamed from ty_le_phan_tram
+    // @ApiProperty({ example: 20.0 })
+    // @Column({ type: 'float' })
+    // percentage: number; // renamed from ty_le_phan_tram
 
     @OneToMany(() => ScoreDetail, (scoreDetail) => scoreDetail.scoreType)
     scoreDetails: ScoreDetail[];

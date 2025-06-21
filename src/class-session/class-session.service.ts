@@ -35,6 +35,14 @@ export class ClassSessionService {
     return session;
 }
 
+async findByCourseClassId(courseClassId: string): Promise<ClassSession[]> {
+  return this.classSessionRepo.find({
+    where: { courseClassId },
+    order: { sessionDate: 'ASC', startPeriod: 'ASC' },
+  });
+}
+
+
   async update(id: number, updateDto: UpdateClassSessionDto): Promise < ClassSession > {
   const session = await this.findOne(id);
   Object.assign(session, updateDto);

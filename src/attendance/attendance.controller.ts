@@ -16,7 +16,7 @@ import { Attendance } from './entities/attendance.entity';
 @ApiTags('Attendance')
 @Controller('attendance')
 export class AttendanceController {
-  constructor(private readonly service: AttendanceService) {}
+  constructor(private readonly service: AttendanceService) { }
 
   @Post()
   @ApiOperation({ summary: 'Create attendance record' })
@@ -24,6 +24,19 @@ export class AttendanceController {
   create(@Body() dto: CreateAttendanceDto): Promise<Attendance> {
     return this.service.create(dto);
   }
+
+  @Post('many')
+  @ApiOperation({ summary: 'Create many attendance record at once' })
+  createMany(@Body() createAttendanceDto: CreateAttendanceDto[]) {
+    return this.service.createMany(createAttendanceDto);
+  }
+
+  @Patch('many')
+  @ApiOperation({ summary: 'Update many attendance records at once' })
+  updateMany(@Body() updateAttendanceDto: UpdateAttendanceDto[]) {
+    return this.service.updateMany(updateAttendanceDto);
+  }
+
 
   @Get()
   @ApiOperation({ summary: 'List all attendance records' })
@@ -52,4 +65,6 @@ export class AttendanceController {
   remove(@Param('id') id: number): Promise<void> {
     return this.service.remove(id);
   }
+
+
 }

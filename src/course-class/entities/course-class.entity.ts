@@ -17,7 +17,7 @@ import { ClassSession } from 'src/class-session/entities/class-session.entity';
 
 @Entity('course_class')
 export class CourseClass {
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryColumn({ type: 'varchar', length: 10 })
     courseClassId: string;
 
     @Column({ name: 'subject_code', type: 'varchar', length: 10 })
@@ -47,7 +47,7 @@ export class CourseClass {
     @Column({ name: 'max_capacity', type: 'int' })
     maxCapacity: number;
 
-    @ManyToOne(() => Subject, (subject) => subject.courseClasses, { onDelete: 'CASCADE' })
+    @ManyToOne(() => Subject, (subject) => subject.courseClasses, { onDelete: 'CASCADE', eager: true })
     @JoinColumn({ name: 'subject_code' })
     subject: Subject;
 
@@ -66,5 +66,9 @@ export class CourseClass {
 
     @OneToMany(() => ClassSession, (session) => session.courseClass)
     sessions: ClassSession[];
+
+    @Column({ name: 'registration_deadline', type: 'timestamp', nullable: true })
+    registrationDeadline: Date | null;
+
 
 }

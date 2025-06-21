@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { CourseClass } from './entities/course-class.entity';
 import { CreateCourseClassDto } from './dto/create-course-class.dto';
 import { UpdateCourseClassDto } from './dto/update-course-class.dto';
+import { FilterCourseClassDto } from './dto/filter-course-class.dto';
+import { ILike, Between, In, FindOptionsWhere } from 'typeorm';
 
 @Injectable()
 export class CourseClassService {
@@ -57,6 +59,62 @@ export class CourseClassService {
     }
     return courseClass;
   }
+
+  async findBySubjectCode(subjectCode: string): Promise<CourseClass[]> {
+    return this.courseClassRepository.find({
+      where: {
+        subject: { subjectCode },
+      },
+      relations: ['subject', 'lecturer'],
+    });
+  }
+
+  async findByLecturerId(lecturerId: string): Promise<CourseClass[]> {
+    return this.courseClassRepository.find({
+      where: {
+        lecturer: { lecturerId },
+      },
+      relations: ['subject', 'lecturer'],
+      order: {
+        courseClassId: 'ASC',
+      },
+    });
+  }
+
+
+  async filter(filter: FilterCourseClassDto): Promise<CourseClass[]> {
+    const where: FindOptionsWhere<CourseClass> = {};
+
+    if (filter.subjectCode) where.subjectCode = filter.subjectCode;
+    if (filter.lecturerId) where.lecturerId = filter.lecturerId;
+    if (filter.semester) where.semester = filter.semester;
+    if (filter.academicYear) where.academicYear = filter.academicYear;
+    if (filter.classroom) where.classroom = ILike(`%${filter.classroom}%`);
+    if (filter.startDate && filter.endDate)
+      where.startDate = Between(filter.startDate, filter.endDate);
+    if (filter.dayOfWeek !== undefined)
+      where.dayOfWeek = In([filter.dayOfWeek]); // could adjust to contain logic
+
+    return this.courseClassRepository.find({
+      where,
+      relations: ['subject', 'lecturer', 'sessions'],
+      order: {
+        courseClassId: 'ASC',
+      },
+    });
+  }
+
+  async findByStudentId(studentId: string): Promise<CourseClass[]> {
+    return this.courseClassRepository
+      .createQueryBuilder('courseClass')
+      .leftJoinAndSelect('courseClass.subject', 'subject')
+      .leftJoinAndSelect('courseClass.lecturer', 'lecturer')
+      .leftJoin('courseClass.courseRegistrations', 'registration')
+      .where('registration.studentId = :studentId', { studentId })
+      .getMany();
+  }
+
+
 
   async update(id: string, updateDto: UpdateCourseClassDto): Promise<CourseClass> {
     const courseClass = await this.findOne(id);

@@ -1,26 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMailDto } from './dto/create-mail.dto';
-import { UpdateMailDto } from './dto/update-mail.dto';
+import { ConfigService } from '@nestjs/config'; // Import ConfigService
+import axios from 'axios';
 
 @Injectable()
 export class MailService {
-  create(createMailDto: CreateMailDto) {
-    return 'This action adds a new mail';
-  }
+  private readonly RESEND_API_URL = 'https://api.resend.com/emails';
+  
+  // Use ConfigService to load the API key from environment
+  constructor(private configService: ConfigService) {}
 
-  findAll() {
-    return `This action returns all mail`;
-  }
+  async sendEmail(to: string, subject: string, html: string) {
+    const RESEND_API_KEY = this.configService.get<string>('RESEND_API_KEY'); // Get API key
 
-  findOne(id: number) {
-    return `This action returns a #${id} mail`;
-  }
+    if (!RESEND_API_KEY) {
+      throw new Error('RESEND_API_KEY not found in environment variables');
+    }
 
-  update(id: number, updateMailDto: UpdateMailDto) {
-    return `This action updates a #${id} mail`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} mail`;
+    try {
+      const response = await axios.post(
+        this.RESEND_API_URL,
+        {
+          from: 'admin@anoc.tech',
+          to: [to],
+          subject: subject,
+          html: html,
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${RESEND_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log("sent mail");
+      
+      return response.data;
+    } catch (error) {
+      console.error('Error sending email:', error.response?.data || error.message);
+      throw new Error('Failed to send email');
+    }
   }
 }

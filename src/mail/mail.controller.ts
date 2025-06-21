@@ -1,34 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { MailService } from './mail.service';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateMailDto } from './dto/create-mail.dto';
-import { UpdateMailDto } from './dto/update-mail.dto';
 
+
+@ApiTags('Mail') // <-- This groups it under "Mail" in Swagger UI
 @Controller('mail')
 export class MailController {
   constructor(private readonly mailService: MailService) {}
 
-  @Post()
-  create(@Body() createMailDto: CreateMailDto) {
-    return this.mailService.create(createMailDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.mailService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.mailService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMailDto: UpdateMailDto) {
-    return this.mailService.update(+id, updateMailDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.mailService.remove(+id);
+  @Post('send')
+  @ApiOperation({ summary: 'Send an email using Resend' })  // <-- This adds a request body schema in Swagger
+  async sendEmail(@Body() SendMailDto: CreateMailDto) {
+    console.log(SendMailDto);
+    
+    return this.mailService.sendEmail(SendMailDto.to, SendMailDto.subject, SendMailDto.html);
   }
 }

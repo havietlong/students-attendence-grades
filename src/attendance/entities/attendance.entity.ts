@@ -8,11 +8,9 @@ export class Attendance {
   @PrimaryGeneratedColumn({ name: 'attendance_id' })
   attendanceId: number;
 
-  @Column({ name: 'course_class_id', type: 'varchar', length: 10 })
-  courseClassId: string;
+  
 
-  @Column({ name: 'student_id', type: 'varchar', length: 10 })
-  studentId: string;
+
 
   @Column({ name: 'date', type: 'date' })
   date: string;
@@ -20,10 +18,13 @@ export class Attendance {
   @Column({ name: 'status', type: 'varchar', length: 10 })
   status: string;
 
-  @Column({ name: 'note', type: 'varchar', length: 200, nullable: true })
-  note?: string;
+  // @Column({ name: 'note', type: 'varchar', length: 200, nullable: true })
+  // note?: string;
+  @ManyToOne(() => CourseClass, { eager: false })
+  @JoinColumn({ name: 'course_class_id' })
+  courseClass: CourseClass;
 
-  @ManyToOne(() => ClassSession)
+  @ManyToOne(() => ClassSession, session => session.attendances)
   @JoinColumn({ name: 'class_session_id' })
   classSession: ClassSession;
 

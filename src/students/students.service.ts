@@ -28,7 +28,7 @@ export class StudentsService {
   async findOne(id: string): Promise<Student | null> {
     return this.studentsRepository.findOne({
       where: {
-        studentId: id,
+        userId: id,
         deletedAt: IsNull(),
       },
     });
@@ -41,7 +41,7 @@ export class StudentsService {
   }
 
   async update(id: string, updateStudentDto: UpdateStudentDto): Promise<Student> {
-    const student = await this.studentsRepository.findOne({ where: { userId: id } });
+    const student = await this.studentsRepository.findOne({ where: { studentId: id } });
 
     if (!student) {
       throw new NotFoundException(`Student with ID ${id} not found`);

@@ -22,13 +22,13 @@ export class LecturersService {
 
   findOne(id: string) {
     return this.lecturerRepo.findOne({
-      where: { lecturerId: id },
+      where: { userId: id },
       relations: ['department'],
     });
   }
 
   async update(id: string, updateDto: UpdateLecturerDto) {
-    const student = await this.lecturerRepo.findOne({ where: { userId: id } });
+    const student = await this.lecturerRepo.findOne({ where: { lecturerId: id } });
     
         if (!student) {
           throw new NotFoundException(`Lecturer with ID ${id} not found`);

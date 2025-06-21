@@ -41,6 +41,15 @@ export class ClassSessionController {
     return this.classSessionService.findAll();
   }
 
+  @Get('by-course-class/:courseClassId')
+  @ApiOperation({ summary: 'Get class sessions by courseClassId' })
+  @ApiParam({ name: 'courseClassId', type: String })
+  @ApiResponse({ status: 200, description: 'Class sessions for the course class', type: [ClassSession] })
+  findByCourseClassId(@Param('courseClassId') courseClassId: string): Promise<ClassSession[]> {
+    return this.classSessionService.findByCourseClassId(courseClassId);
+  }
+
+
   @Get(':id')
   @ApiOperation({ summary: 'Get a class session by id' })
   @ApiParam({ name: 'id', type: Number })

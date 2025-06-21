@@ -2,9 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   // Global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
@@ -13,6 +15,11 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+    // ✅ Static assets setup
+  app.useStaticAssets(join(__dirname, '..', 'pictures'), {
+    prefix: '/pictures',
+  });
 
   app.enableCors({
     origin: 'http://localhost:4200', // your Angular app's address

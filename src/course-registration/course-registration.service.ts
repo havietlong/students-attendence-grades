@@ -24,7 +24,7 @@ export class CourseRegistrationService {
 
   async findOne(id: string): Promise<CourseRegistration> {
     const registration = await this.registrationRepository.findOne({
-      where: { registrationId: id },
+      where: { classId: id },
     });
     if (!registration) {
       throw new NotFoundException(`Registration with ID ${id} not found`);

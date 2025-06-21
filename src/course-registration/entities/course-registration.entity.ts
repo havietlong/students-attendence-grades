@@ -1,10 +1,10 @@
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { CourseClass } from 'src/course-class/entities/course-class.entity';
 import { Student } from 'src/students/entities/student.entity';
 
 @Entity('CourseRegistration')
 export class CourseRegistration {
-  @PrimaryColumn({ name: 'registration_id', type: 'varchar', length: 10 })
+  @PrimaryGeneratedColumn("uuid")
   registrationId: string;
 
   @Column({ name: 'student_id', type: 'varchar', length: 10 })
@@ -16,14 +16,13 @@ export class CourseRegistration {
   @Column({ name: 'registration_date', type: 'timestamp' })
   registrationDate: Date;
 
-  @Column({ name: 'status', type: 'varchar', length: 20 })
-  status: string;
 
-  @ManyToOne(() => Student, (student) => student.courseRegistrations)
+
+  @ManyToOne(() => Student, (student) => student.courseRegistrations,{eager:true})
   @JoinColumn({ name: 'student_id' })
   student: Student;
 
-  @ManyToOne(() => CourseClass, (courseClass) => courseClass.courseRegistrations)
+  @ManyToOne(() => CourseClass, (courseClass) => courseClass.courseRegistrations,{eager:true})
   @JoinColumn({ name: 'class_id' })
   courseClass: CourseClass;
 }

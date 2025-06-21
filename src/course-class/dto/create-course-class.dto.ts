@@ -3,6 +3,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsInt, IsDateString, IsOptional, IsArray } from 'class-validator';
 
 export class CreateCourseClassDto {
+  @ApiProperty({ example: 'MH001A' })
+  @IsString()
+  courseClassId: string;
 
   @ApiProperty({ example: 'SUBJ01' })
   @IsString()
@@ -40,4 +43,8 @@ export class CreateCourseClassDto {
   @ApiProperty({ example: 50, description: 'Maximum number of students' })
   @IsInt()
   maxCapacity: number;
+
+  @ApiProperty({ example: '2024-12-30' })
+  @IsDateString()
+  registrationDeadline: string;
 }

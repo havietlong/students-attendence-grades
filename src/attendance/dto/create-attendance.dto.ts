@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsDateString, IsOptional } from 'class-validator';
+import { IsString, IsDateString, IsOptional, IsNumber } from 'class-validator';
 
 export class CreateAttendanceDto {
   @ApiProperty({ example: 'CC101' })
@@ -18,8 +18,13 @@ export class CreateAttendanceDto {
   @IsString()
   status: string;
 
-  @ApiProperty({ example: 'Late by 10 mins', required: false })
+    @ApiProperty({ example: '1', description: 'Id of class-seesion' })
   @IsOptional()
-  @IsString()
-  note?: string;
+    @IsString()
+  classSessionId?: string;
+
+  // @ApiProperty({ example: 'Late by 10 mins', required: false })
+  // @IsOptional()
+  // @IsString()
+  // note?: string;
 }
